@@ -9,26 +9,26 @@ export const TaskManager = () => {
   const [tasks, setTasks] = useState([]);
 
   // remove task from list
-  const completeTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+ 
+  const completeTask = (id : any) => {
+    setTasks(tasks.filter((task : any) => task.id !== id));
   };
+  const updateTask = (id : any, taskUpdate : any) => {
+    const newTasks: any  = tasks.slice();
 
-  const updateTask = (id, taskUpdate) => {
-    const newTasks = tasks.slice();
-
-    const index = tasks.findIndex((task) => task.id === id);
+    const index : any = tasks.findIndex((task :any) => task.id === id);
 
     newTasks[index] = taskUpdate;
 
     setTasks(newTasks);
   };
 
-  const addTask = () => {
+   const addTask: any= () => {
     if (title.length < 1) {
       return;
     }
 
-    const newTask = {
+    const newTask :any  = {
       // using nanoid to generate unique id
       id: nanoid(),
       title,
@@ -37,11 +37,11 @@ export const TaskManager = () => {
     setTitle("");
   };
 
-  const handleSearch = (ev) => {
+  const handleSearch = (ev :any) => {
     setSearchKeyword(ev.target.value);
   };
 
-  const filteredTasks = tasks.filter((task) =>
+  const filteredTasks = tasks.filter((task : any ) =>
     task.title.toLowerCase().includes(searchKeyword.toLowerCase()),
   );
 
@@ -66,7 +66,7 @@ export const TaskManager = () => {
       </div>
 
       <ul className="container">
-        {filteredTasks.map((task) => (
+      {filteredTasks.map((task : any) => (
           <li key={task.id} className="task">
             <div className="task">
               <input
