@@ -1,34 +1,18 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import "./TaskManager.css";
-
 // TODO: create custom hook to manage task state
-export const TaskManager = () => {
-  const [title, setTitle] = useState("");
-  const [searchKeyword, setSearchKeyword] = useState("");
+export const useTaskManager = () => {
   const [tasks, setTasks] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [title, setTitle] = useState("");
 
-  // remove task from list
- 
-  const completeTask = (id : any) => {
-    setTasks(tasks.filter((task : any) => task.id !== id));
-  };
-  const updateTask = (id : any, taskUpdate : any) => {
-    const newTasks: any  = tasks.slice();
-
-    const index : any = tasks.findIndex((task :any) => task.id === id);
-
-    newTasks[index] = taskUpdate;
-
-    setTasks(newTasks);
-  };
-
-   const addTask: any= () => {
+  const addTask: any = () => {
     if (title.length < 1) {
       return;
     }
 
-    const newTask :any  = {
+    const newTask: any = {
       // using nanoid to generate unique id
       id: nanoid(),
       title,
@@ -37,13 +21,37 @@ export const TaskManager = () => {
     setTitle("");
   };
 
-  const handleSearch = (ev :any) => {
+  const completeTask = (id: any) => {
+    setTasks(tasks.filter((task: any) => task.id !== id));
+  };
+
+  const updateTask = (id: any, taskUpdate: any) => {
+    const newTasks: any = tasks.slice();
+
+    const index: any = tasks.findIndex((task: any) => task.id === id);
+
+    newTasks[index] = taskUpdate;
+
+    setTasks(newTasks);
+  };
+
+  const filteredTasks = tasks.filter((task: any) =>
+    task.title.toLowerCase().includes(searchKeyword.toLowerCase()),
+  );
+
+  const handleSearch = (ev: any) => {
     setSearchKeyword(ev.target.value);
   };
 
-  const filteredTasks = tasks.filter((task : any ) =>
-    task.title.toLowerCase().includes(searchKeyword.toLowerCase()),
-  );
+  return { title ,addTask , completeTask , updateTask , filteredTasks , handleSearch, setTitle}
+
+}
+
+
+export const TaskManager = () => {
+
+  const { title ,addTask , completeTask , updateTask , filteredTasks , handleSearch , setTitle} = useTaskManager();
+
 
   return (
     <div className="container">
@@ -66,7 +74,7 @@ export const TaskManager = () => {
       </div>
 
       <ul className="container">
-      {filteredTasks.map((task : any) => (
+        {filteredTasks.map((task: any) => (
           <li key={task.id} className="task">
             <div className="task">
               <input
